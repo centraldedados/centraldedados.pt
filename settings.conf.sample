@@ -1,0 +1,7 @@
+[keys]
+morph_api_key = your_morph_api_key
+
+[repositories]
+population = https://github.com/datasets/population.git
+gold-prices = https://github.com/datasets/gold-prices.git
+gdp = https://github.com/datasets/gdp.git
