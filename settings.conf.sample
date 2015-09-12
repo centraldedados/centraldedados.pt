@@ -5,6 +5,8 @@ theme = centraldedados
 morph_api_key = your_morph_api_key
 
 [repositories]
-population = https://github.com/datasets/population.git
-gold-prices = https://github.com/datasets/gold-prices.git
-gdp = https://github.com/datasets/gdp.git
+eleicoes-datas = https://github.com/centraldedados/eleicoes-datas.git
+parlamento-datas_sessoes = https://github.com/centraldedados/parlamento-datas_sessoes.git
+obitos = https://github.com/centraldedados/obitos.git
+nomes_proprios = https://github.com/centraldedados/nomes_proprios.git
+codigos_postais = https://github.com/centraldedados/codigos_postais.git

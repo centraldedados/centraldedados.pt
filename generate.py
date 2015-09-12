@@ -212,7 +212,7 @@ def generate(offline, fetch_only):
                     origin.fetch()
                 except git.exc.GitCommandError:
                     log.critical("Fetch error connecting to repository, this dataset will be ignored and not listed in the index!")
-                    continue
+                    raise
                 # connection errors can also happen if fetch succeeds but pull fails
                 try:
                     result = origin.pull()[0]
