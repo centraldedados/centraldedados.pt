@@ -101,6 +101,8 @@ def process_datapackage(pkg_name):
         - name
         - title
         - license
+        - repository
+        - version
         - description
         - sources
         - readme: in HTML, processed with python-markdown from README.md,
@@ -121,6 +123,8 @@ def process_datapackage(pkg_name):
     pkg_info['license'] = metadata.get('license')
     pkg_info['description'] = metadata['description']
     pkg_info['sources'] = metadata.get('sources')
+    pkg_info['version'] = metadata.get('version')
+    pkg_info['repository'] = metadata.get('repository')
     # process README
     readme = ""
     readme_path = os.path.join(pkg_dir, "README.md")
