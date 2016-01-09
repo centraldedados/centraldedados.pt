@@ -101,7 +101,7 @@ def create_dataset_page(pkg_info):
     log.info("Created %s." % target)
 
 
-def process_datapackage(pkg_name):
+def process_datapackage(pkg_name, repository_url=None):
     '''Reads a data package and returns a dict with its metadata. The
     items in the dict are:
         - name
@@ -130,7 +130,7 @@ def process_datapackage(pkg_name):
     pkg_info['description'] = metadata['description']
     pkg_info['sources'] = metadata.get('sources')
     pkg_info['version'] = metadata.get('version')
-    pkg_info['repository'] = metadata.get('repository')
+    pkg_info['repository'] = metadata.get('repository') or repository_url
     # process README
     readme = ""
     readme_path = os.path.join(pkg_dir, "README.md")
@@ -252,7 +252,7 @@ def generate(offline, fetch_only):
                 updated = True
 
         # get datapackage metadata
-        pkg_info = process_datapackage(name)
+        pkg_info = process_datapackage(name, url)
         # set last updated time based on last commit, comes in Unix timestamp format so we convert
         import datetime
         d = repo.head.commit.committed_date
