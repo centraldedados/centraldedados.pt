@@ -9,6 +9,6 @@ possam ser reutilizados em visualizações, *webapps*, consultas e outros fins.
 É possível [seguir as novidades no Twitter](https://twitter.com/CentralDeDados)!
 
 A Central de Dados é uma ferramenta aberta e pública, e todo o código para ela
-criado está [disponível](https://github.com/centraldedados/datacentral) segundo
+criado está [disponível](https://github.com/centraldedados/centraldedados.pt) segundo
 uma licença de software livre.
 
