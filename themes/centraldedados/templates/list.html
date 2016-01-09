@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <div class="search">
+        <input id="search" type="text" placeholder="Pesquisar datasets..." />
+        <span id="spinner"><img src="/img/ajax-loader.gif" alt="Loading..." title="Loading..." /></span>
+    </div>
     <ul class="datasets">
         <li class="notfound">
             No datasets found.
