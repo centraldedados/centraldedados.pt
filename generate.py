@@ -27,7 +27,6 @@ from utils import csv2json
 from zenlog import log
 
 config_file = "settings.conf"
-output_dir = "_output"
 repo_dir = "repos"
 datasets_dir = "datasets"
 files_dir = "download"
@@ -53,7 +52,7 @@ def local_and_remote_are_at_same_commit(repo, remote):
     return local_commit.hexsha == remote_commit.hexsha
 
 
-def create_index_page(packages):
+def create_index_page(packages, output_dir):
     '''Generates the index page with the list of available packages.
     Accepts a list of pkg_info dicts, which are generated with the
     process_datapackage function.'''
@@ -69,7 +68,7 @@ def create_index_page(packages):
     log.info("Created index.html.")
 
 
-def create_api(packages):
+def create_api(packages, output_dir):
     '''Generates a static API containing all the datapackage.json of the containing datasets.
     Accepts a list of pkg_info dicts, which are generated with the
     process_datapackage function.'''
@@ -82,7 +81,7 @@ def create_api(packages):
     log.info("Created api.json.")
 
 
-def create_dataset_page(pkg_info):
+def create_dataset_page(pkg_info, output_dir):
     '''Generate a single dataset page.'''
     template = env.get_template("dataset.html")
     name = pkg_info["name"]
@@ -165,7 +164,8 @@ def process_datapackage(pkg_name, repository_url=None):
 @click.command()
 @click.option('-f', '--fetch-only', help='Only clone or pull repos, do not generate HTML output.', is_flag=True, default=False)
 @click.option('-o', '--offline', help='Offline mode, do not clone or pull.', is_flag=True, default=False)
-def generate(offline, fetch_only):
+@click.option('-d', '--output-dir', help='Output dir', is_flag=False, default='_output')
+def generate(offline, fetch_only, output_dir):
     '''Main function that takes care of the whole process.'''
     # set up the output directory
     if not os.path.exists(output_dir):
@@ -261,11 +261,11 @@ def generate(offline, fetch_only):
         # add it to the packages list for index page generation after the loop ends
         packages.append(pkg_info)
         # re-generate the dataset HTML pages
-        create_dataset_page(pkg_info)
+        create_dataset_page(pkg_info, output_dir)
         # if repo was updated, copy over CSV/JSON/* and ZIP files to the download dir
         # (we always generate them if offline)
         if updated or offline:
-            create_dataset_page(pkg_info)
+            create_dataset_page(pkg_info, output_dir)
             datafiles = pkg_info['datafiles']
             zipf = zipfile.ZipFile(os.path.join(output_dir, name + '.zip'), 'w')
             for d in datafiles:
@@ -283,9 +283,9 @@ def generate(offline, fetch_only):
             zipf.close()
 
     # generate the HTML index with the list of available packages
-    create_index_page(packages)
+    create_index_page(packages, output_dir)
     # generate the static JSON API of the data packages
-    create_api(packages)
+    create_api(packages, output_dir)
 
 
 if __name__ == "__main__":

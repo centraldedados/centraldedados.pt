@@ -27,12 +27,14 @@
 SSH_PATH = "wf:~/webapps/centraldedados/"
 # server port for local server
 SERVER_PORT = 8002
-MAIN_SCRIPT = $(wildcard generate.py)
-OFFLINE_FLAG = "--offline"
+OFFLINE_FLAG = --offline
+OUTPUT = _output
+MAIN_SCRIPT = $(wildcard generate.py) --output-dir=$(OUTPUT)
 
-build:
+$(OUTPUT):
 	. `pwd`/.env/bin/activate; python $(MAIN_SCRIPT)
 
+build: $(OUTPUT)
 build-offline:
 	. `pwd`/.env/bin/activate; python $(MAIN_SCRIPT) $(OFFLINE_FLAG)
 
@@ -41,12 +43,11 @@ install:
 	. `pwd`/.env/bin/activate; pip install -r requirements.txt
 	cp settings.conf.sample settings.conf
 
-serve:
-	. `pwd`/.env/bin/activate; cd _output && livereload -p $(SERVER_PORT)
+serve: $(OUTPUT)
+	. `pwd`/.env/bin/activate; cd $(OUTPUT) && livereload -p $(SERVER_PORT)
 
 deploy:
-	rsync --compress --progress --recursive --delete _output/ $(SSH_PATH)
+	rsync --compress --progress --recursive --delete $(OUTPUT)/ $(SSH_PATH)
 
 clean:
-	rm -fr repos _output
-
+	rm -fr repos $(OUTPUT)
