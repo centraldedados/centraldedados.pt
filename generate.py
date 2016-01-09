@@ -47,6 +47,12 @@ template_dir = os.path.join(theme_dir, "templates")
 env = jinja2.Environment(loader=jinja2.FileSystemLoader([template_dir]))
 
 
+def local_and_remote_are_at_same_commit(repo, remote):
+    local_commit = repo.commit()
+    remote_commit = remote.fetch()[0].commit
+    return local_commit.hexsha == remote_commit.hexsha
+
+
 def create_index_page(packages):
     '''Generates the index page with the list of available packages.
     Accepts a list of pkg_info dicts, which are generated with the
@@ -101,6 +107,8 @@ def process_datapackage(pkg_name):
         - name
         - title
         - license
+        - repository
+        - version
         - description
         - sources
         - readme: in HTML, processed with python-markdown from README.md,
@@ -121,6 +129,8 @@ def process_datapackage(pkg_name):
     pkg_info['license'] = metadata.get('license')
     pkg_info['description'] = metadata['description']
     pkg_info['sources'] = metadata.get('sources')
+    pkg_info['version'] = metadata.get('version')
+    pkg_info['repository'] = metadata.get('repository')
     # process README
     readme = ""
     readme_path = os.path.join(pkg_dir, "README.md")
@@ -138,13 +148,14 @@ def process_datapackage(pkg_name):
     # process resource/datafiles list
     for r in metadata['resources']:
         r['basename'] = os.path.basename(r['path'])
-        if r.get('name'):
-            title = os.path.basename(r['name'])
-        else:
-            # no resource name, use capitalised filename
-            title = os.path.basename(r['path']).split('.')[0]
-            title = title[:1].upper() + title[1:]
-        r['title'] = title
+        if not r.get('title'):
+            if r.get('name'):
+                title = os.path.basename(r['name'])
+            else:
+                # no resource name, use capitalised filename
+                title = os.path.basename(r['path']).split('.')[0]
+                title = title[:1].upper() + title[1:]
+            r['title'] = title
 
     pkg_info['datafiles'] = metadata['resources']
 
@@ -195,7 +206,6 @@ def generate(offline, fetch_only):
         # do we have a local copy?
         if os.path.isdir(dir_name):
             if not offline:
-                log.info("Checking for changes in repo '%s'..." % name)
                 repo = git.Repo(dir_name)
                 origin = repo.remotes.origin
                 try:
@@ -204,30 +214,26 @@ def generate(offline, fetch_only):
                     # usually this fails on the first run, try again
                     origin.fetch()
                 except git.exc.GitCommandError:
-                    log.critical("Fetch error connecting to repository, this dataset will be ignored and not listed in the index!")
+                    log.critical("%s: Fetch error, this dataset will be left out." % name)
                     raise
-                # connection errors can also happen if fetch succeeds but pull fails
-                try:
-                    result = origin.pull()[0]
-                except git.exc.GitCommandError:
-                    log.critical("Pull error connecting to repository, this dataset will be ignored and not listed in the index!")
-                    continue
-                # we get specific flags for the results Git gave us
-                # and we set the "updated" var in order to signal whether to
-                # copy over the new files to the download dir or not
-                if result.flags & result.HEAD_UPTODATE:
-                    log.info("No new changes in repo '%s'." % name)
-                    updated = False
-                elif result.flags & result.ERROR:
-                    log.error("Error pulling from repo '%s'!" % name)
-                    updated = False
-                else:
-                    # TODO: figure out other git-python flags and return more
-                    # informative log output
-                    log.info("Repo changed, updating. (returned flags: %d)" % result.flags)
+                # see if we have updates
+                if not local_and_remote_are_at_same_commit(repo, origin):
+                    log.info("%s: Repo has new commits, updating local copy." % name)
                     updated = True
+                    # connection errors can also happen if fetch succeeds but pull fails
+                    try:
+                        result = origin.pull()[0]
+                    except git.exc.GitCommandError:
+                        log.critical("%s: Pull error, this dataset will be left out." % name)
+                        continue
+                    if result.flags & result.ERROR:
+                        log.error("%s: Pull error, but going ahead." % name)
+                        updated = False
+                else:
+                    log.info("%s: No changes." % name)
+                    updated = False
             else:
-                log.info("Offline mode, using cached version of package %s..." % name)
+                log.info("%s: Offline mode, using cached version." % name)
                 # we set updated to True in order to re-generate everything
                 # FIXME: See checksum of CSV files to make sure they're new before
                 # marking updated as true
@@ -238,10 +244,10 @@ def generate(offline, fetch_only):
                 continue
         else:
             if offline:
-                log.warn("Package %s specified in settings but no local cache, skipping..." % name)
+                log.warn("%s: No local cache, skipping." % name)
                 continue
             else:
-                log.info("We don't have repo '%s', cloning..." % name)
+                log.info("%s: New repo, cloning." % name)
                 repo = git.Repo.clone_from(url, dir_name)
                 updated = True
 

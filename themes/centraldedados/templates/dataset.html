@@ -1,42 +1,63 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>{{ title }}</h1>
 
-    <div class="readme">
+<section class="row">
+  <div>
+    <div class="main-dataset">
+      <h1>{{ title }}</h1>
+
+      <div class="details">
+        <h4>Detalhes</h4>
+        <p><strong>Versão</strong> {{ datapkg.version }}</p>
+        <p><strong>Licença</strong> {{ datapkg.license }}</p>
+        <p><strong>Última atualização</strong> {{ datapkg.last_updated }}</p>
+        <p><a href="{{ datapkg.repository }}">Ver o repositório Git</a></p>
+        <hr>
+        <div class="downloads">
+          <h4>Downloads</h4>
+          {% for d in datapkg.datafiles %}
+          <div class="datafile-box">
+            <p><strong>{{ d.title|upper }}</strong> &ndash; <a href="/{{ d.basename }}">CSV</a> &bull; <a href="/{{ d.basename.replace(".csv", ".json") }}">JSON</a></p>
+            <div class="datafile-fieldlist">
+              <h5>Campos</h5>
+              <ul>
+                {% for f in d.schema.fields %}
+                <li><strong>{{ f.name }}</strong> &ndash; {{ f.description }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <hr>
+        <div class="sources">
+          <h4>Fontes</h4>
+          <ul>
+            {% for s in datapkg.sources %}
+            <li><a href="{{ s.web }}">{{ s.name }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="readme">
+        <h1 class="title">{{ datapkg.title }}</h1>
         {% if datapkg.description %}
-            <h4>{{ datapkg.description }}</h4>
+        <h2 class="subtitle">{{ datapkg.description }}</h2>
         {% endif %}
         {{ datapkg.readme }}
+      </div>
 
-        {% for d in datapkg.datafiles %}
-          <h5>{{ d.name }}</h5>
-          <dl>
-          {% for f in d.schema.fields %}
-           <dt>{{ f.name }}</dt><dd>{{ f.description }}</dd>
-          {% endfor %}
-        {% endfor %}
     </div>
+  </div>
+</section>
 
-    <div class="more-info">
-      <p>Versão: {{ datapkg.version }}</p>
-      <p>Fontes:</p>
-      <ul>
-        {% for s in datapkg.sources %}
-        <li><a href="{{ s.web }}">{{ s.name }}</a></li>
-        {% endfor %}
-      <p>Licença: {{ datapkg.license }}</p>
-      <p>Última atualização: {{ datapkg.last_updated }}</p>
-      <p>Repositório Git: <em>{{ datapkg.repository }}</em></p>
 
-    <ul class="datafiles">
-        <li><h4>Ficheiros</h4></li>
-        {% for d in datapkg.datafiles %}
-            <li class="box">
-                <span>{{ d.name }}</span>
-                <a href="/{{ d.basename }}">CSV</a>
-                <a href="/{{ d.basename.replace(".csv", ".json") }}">JSON</a>
-            </li>
-        {% endfor %}
-    </ul>
+
+
+
+
+
+
+
 {% endblock content %}
