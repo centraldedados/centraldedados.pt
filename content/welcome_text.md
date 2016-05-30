@@ -1,3 +1,6 @@
+**Este site ainda está em desenvolvimento; os recursos aqui contidos podem ser
+usados, mas poderão ser alterados ou corrigidos a qualquer momento.**
+
 A Central de Dados é um **repositório aberto de datasets _Open Data_ em
 Portugal**. Os dados aqui publicados são provenientes de diversas fontes e
 estão sob a curadoria do [Transparência
