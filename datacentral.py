@@ -79,7 +79,10 @@ def create_static_pages(output_dir):
         if not os.path.exists(target_dir):
             os.makedirs(target_dir)
         target = os.path.join(target_dir, "index.html")
-        context = dict({"content": markdown.markdown(codecs.open(f, 'r', 'utf-8').read(), output_format="html5", encoding="UTF-8")}, **global_context)
+        md_content = markdown.markdown(codecs.open(f, 'r', 'utf-8').read(), output_format="html5", encoding="UTF-8")
+        context = dict({"content": md_content,
+                        "pagename": page_name},
+                       **global_context)
         contents = template.render(**context)
         f = codecs.open(target, 'w', 'utf-8')
         f.write(contents)
