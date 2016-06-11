@@ -227,7 +227,15 @@ body {
 a {
     color: #de1b1b;
     text-decoration: none;
+    outline: 0;
 }
+
+a:hover,
+a:focus,
+a:active {
+    color: #c91313;
+}
+
 
 /* Layout
 */
@@ -314,16 +322,25 @@ a {
 
 .row .description {
     font-size: 0.865rem;
-    padding-top: 1.45rem;
 }
 
 .description p,
-.main .readme p {
+.main .readme p,
+.row .main p {
     margin-bottom: .75em;
 }
 
-.row .main {
-    padding-top: 1.45rem;
+.row .main ul {
+    margin-left: 1.25rem;
+    line-height: 1.4;
+    list-style-type: '— ';
+    list-style-position: outside;
+    margin-bottom: 1rem;
+}
+
+.row .main ul li {
+    padding-left: 0.25rem;
+    margin-bottom: 0.45rem;
 }
 
 .search {
@@ -387,21 +404,6 @@ code {
     .datasets > li a p { color: #2c373a; }
     .datasets > li a p.source { color: #969ba6; }
 
-/* antigos botões detalhe + download 
-.datasets h3 > span {
-    display: inline-block;
-    float: right;
-}
-
-.datasets h3 > span a {
-    font-size: 0.5rem;
-    display: inline-block;
-    border: 2px solid #de1b1b;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-}
-*/
-
 .datasets .source {
     font-size: 0.875rem;
     color: #969ba6;
@@ -409,6 +411,10 @@ code {
 
 /* dataset page
 */
+
+.main-dataset .details h4:first-child {
+    padding-top: 0;
+}
 
 .datafile-box {
     margin-top: 1em;
@@ -425,7 +431,7 @@ code {
 
 .readme h1.title {
     font-size: 1.75rem;
-    margin-bottom: 0px;
+    margin-bottom: 0.45em;
 }
 
 .readme h2.subtitle {
@@ -434,7 +440,7 @@ code {
     font-weight: 700;
     color: #999;
     margin-top: 0;
-    margin-bottom: 2em;
+    margin-bottom: 1em;
 }
 
 .readme h1 {
@@ -455,19 +461,22 @@ code {
 }
 
 .footer h5 {
+    color: #2c373a;
     margin-bottom: 1.75em;
     text-transform: none;
 }
 
 .footer h5 a {
+    display: inline-block;
     margin: 0 0.75em;
     text-transform: uppercase;
 }
 
 .footer h5 img {
     display: inline-block;
-    height: 32px;
+    height: 18px;
     width: auto;
+    vertical-align: bottom;
 }
 
 
@@ -527,7 +536,7 @@ code {
     }
 
     .datafiles > ul {
-        margin: 0 0    20px;
+        margin: 0 0 20px;
     }
 
 }
@@ -551,7 +560,7 @@ code {
     .header > div > a p {
         display: block;
         float: left;
-        width: 20%;
+        width: 28%;
         margin-right: 2%;
     }
 
@@ -575,18 +584,19 @@ code {
         overflow: auto;
         clear: both;
         margin: 0 auto;
+        padding-top: 1.325em;
         padding-bottom: 1.325em;
     }
 
     .row > div > .description {
         float: left;
-        width: 20%;
+        width: 28%;
         margin-right: 2%;
     }
 
     .row div .main {
         float: left;
-        width: 78%;
+        width: 70%;
     }
 
     .row div .main-dataset {
@@ -596,13 +606,13 @@ code {
 
     .details {
         float: left;
-        width: 30%;
-        margin-right: 5%;
+        width: 28%;
+        margin-right: 2%;
     }
 
     .readme {
         float: left;
-        width: 65%;
+        width: 70%;
     }
 
     .footer li {

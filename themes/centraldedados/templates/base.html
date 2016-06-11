@@ -3,8 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>{% block title %}Central de Dados{% endblock %}</title>
-    <meta name="description" content="Um repositório de datasets Open Data em Portugal">
+    {% block title %}
+      <title>Central de Dados</title>
+      <meta name="description" content="Um repositório de datasets Open Data em Portugal">
+    {% endblock %}
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <link rel="shortcut icon" href="/img/favicon.png">
@@ -15,7 +17,7 @@
     <nav class="nav">
       <div>
         <ul>
-            <li><a href="/sobre">Sobre</a></li>
+            <li><a href="/sobre/">Sobre</a></li>
             <li><a href="#">Perguntas & Respostas</a></li>
           <li><a href="/api.json">API</a></li>
         </ul>
