@@ -330,6 +330,19 @@ a:active {
     margin-bottom: .75em;
 }
 
+.row .main ul {
+    margin-left: 1.25rem;
+    line-height: 1.4;
+    list-style-type: '— ';
+    list-style-position: outside;
+    margin-bottom: 1rem;
+}
+
+.row .main ul li {
+    padding-left: 0.25rem;
+    margin-bottom: 0.45rem;
+}
+
 .search {
     padding: 0 0 1em;
 }
