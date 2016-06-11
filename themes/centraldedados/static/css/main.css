@@ -330,15 +330,15 @@ a:active {
     margin-bottom: .75em;
 }
 
-.row .main-dataset ul,
+.row .main-dataset .readme ul,
 .row .static-page ul  {
     line-height: 1.4;
     margin-bottom: 1rem;
     margin-left: 0;
 }
 
-.row .main-dataset ul li::before,
-.row .static-page ul li::before {
+.row .main-dataset .readme ul li::before,
+.row .static-page .readme ul li::before {
     content: '— ';
     display: inline-block;
     padding-right: 0.45rem;
