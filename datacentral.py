@@ -12,7 +12,11 @@ TODO:
 
 '''
 
-from ConfigParser import SafeConfigParser
+try:
+    from configparser import SafeConfigParser
+except ImportError:
+    from ConfigParser import SafeConfigParser
+
 import jinja2
 import git
 import sys
@@ -23,27 +27,23 @@ import json
 import codecs
 import click
 import zipfile
+import glob
 from utils import csv2json
 from zenlog import log
 
-config_file = "settings.conf"
-repo_dir = "repos"
+CONFIG_FILE = "settings.conf"
+OUTPUT_DIR = "_output"
+REPO_DIR = "repos"
 datasets_dir = "datasets"
 files_dir = "download"
-themes_dir = "themes"
+THEMES_DIR = "themes"
 
-# read the config file
-parser = SafeConfigParser()
-parser.read(config_file)
+# init global vars
+env = None
 packages = []
 
-print parser.get('ui', 'theme')
-theme_name = parser.get('ui', 'theme')
-theme_dir = os.path.join(themes_dir, theme_name)
-
-# set up Jinja
-template_dir = os.path.join(theme_dir, "templates")
-env = jinja2.Environment(loader=jinja2.FileSystemLoader([template_dir]))
+# set logging level
+log.level('info')
 
 
 def local_and_remote_are_at_same_commit(repo, remote):
@@ -65,10 +65,29 @@ def create_index_page(packages, output_dir):
     f = codecs.open(os.path.join(output_dir, target), 'w', 'utf-8')
     f.write(contents)
     f.close()
-    log.info("Created index.html.")
+    log.debug("Created index.html.")
 
 
-def create_api(packages, output_dir):
+def create_static_pages(output_dir):
+    '''Generates a static page from each of the files contained in
+    `content/pages/`.'''
+    template = env.get_template("page.html")
+    for f in glob.glob("content/pages/*.md"):
+        page_name = f.split("/")[-1].replace(".md", "")
+        print page_name
+        target_dir = os.path.join(output_dir, "%s/" % page_name)
+        os.makedirs(target_dir)
+        target = os.path.join(target_dir, "index.html")
+        context = {"content": markdown.markdown(codecs.open(f, 'r', 'utf-8').read(), output_format="html5", encoding="UTF-8"),
+                   }
+        contents = template.render(**context)
+        f = codecs.open(target, 'w', 'utf-8')
+        f.write(contents)
+        f.close()
+        log.debug("Created static page '%s'." % page_name)
+
+
+def create_api(packages, output_dir, repo_dir):
     '''Generates a static API containing all the datapackage.json of the containing datasets.
     Accepts a list of pkg_info dicts, which are generated with the
     process_datapackage function.'''
@@ -78,7 +97,7 @@ def create_api(packages, output_dir):
         all_metadata.append(json.loads(open(os.path.join(pkg_dir, "datapackage.json")).read()))
     with open(os.path.join(output_dir, 'api.json'), 'w') as api_file:
         json.dump(all_metadata, api_file)
-    log.info("Created api.json.")
+    log.debug("Created api.json.")
 
 
 def create_dataset_page(pkg_info, output_dir):
@@ -97,10 +116,10 @@ def create_dataset_page(pkg_info, output_dir):
     f = codecs.open(os.path.join(output_dir, target), 'w', 'utf-8')
     f.write(contents)
     f.close()
-    log.info("Created %s." % target)
+    log.debug("Created %s." % target)
 
 
-def process_datapackage(pkg_name, repository_url=None):
+def process_datapackage(pkg_name, repo_dir):
     '''Reads a data package and returns a dict with its metadata. The
     items in the dict are:
         - name
@@ -161,18 +180,31 @@ def process_datapackage(pkg_name, repository_url=None):
     return pkg_info
 
 
-@click.command()
-@click.option('-f', '--fetch-only', help='Only clone or pull repos, do not generate HTML output.', is_flag=True, default=False)
-@click.option('-o', '--offline', help='Offline mode, do not clone or pull.', is_flag=True, default=False)
-@click.option('-d', '--output-dir', help='Output dir', is_flag=False, default='_output')
-def generate(offline, fetch_only, output_dir):
+def generate(offline=False,
+             fetch_only=False,
+             output_dir=OUTPUT_DIR,
+             theme_dir=os.path.join(THEMES_DIR, 'centraldedados'),
+             repo_dir=REPO_DIR,
+             config_file=CONFIG_FILE):
     '''Main function that takes care of the whole process.'''
+    global env, packages
+    # read the config file
+    parser = SafeConfigParser()
+    parser.read(config_file)
+
+    theme_name = parser.get('ui', 'theme')
+    theme_dir = os.path.join(THEMES_DIR, theme_name)
+
+    # set up Jinja
+    template_dir = os.path.join(theme_dir, "templates")
+    env = jinja2.Environment(loader=jinja2.FileSystemLoader([template_dir]))
+
     # set up the output directory
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
     # set up the dir for storing repositories
     if not os.path.exists(repo_dir):
-        log.info("Directory %s doesn't exist, creating it." % repo_dir)
+        log.debug("Directory %s doesn't exist, creating it." % repo_dir)
         os.mkdir(repo_dir)
     # copy htaccess file
     shutil.copyfile(os.path.join(theme_dir, 'static/htaccess'), os.path.join(output_dir, ".htaccess"))
@@ -218,7 +250,7 @@ def generate(offline, fetch_only, output_dir):
                     raise
                 # see if we have updates
                 if not local_and_remote_are_at_same_commit(repo, origin):
-                    log.info("%s: Repo has new commits, updating local copy." % name)
+                    log.debug("%s: Repo has new commits, updating local copy." % name)
                     updated = True
                     # connection errors can also happen if fetch succeeds but pull fails
                     try:
@@ -233,7 +265,7 @@ def generate(offline, fetch_only, output_dir):
                     log.info("%s: No changes." % name)
                     updated = False
             else:
-                log.info("%s: Offline mode, using cached version." % name)
+                log.debug("%s: Offline mode, using cached version." % name)
                 # we set updated to True in order to re-generate everything
                 # FIXME: See checksum of CSV files to make sure they're new before
                 # marking updated as true
@@ -252,7 +284,7 @@ def generate(offline, fetch_only, output_dir):
                 updated = True
 
         # get datapackage metadata
-        pkg_info = process_datapackage(name, url)
+        pkg_info = process_datapackage(name, repo_dir)
         # set last updated time based on last commit, comes in Unix timestamp format so we convert
         import datetime
         d = repo.head.commit.committed_date
@@ -282,11 +314,22 @@ def generate(offline, fetch_only, output_dir):
                 pass
             zipf.close()
 
-    # generate the HTML index with the list of available packages
+    # HTML index with the list of available packages
     create_index_page(packages, output_dir)
-    # generate the static JSON API of the data packages
-    create_api(packages, output_dir)
+    # Static JSON API of the data packages
+    create_api(packages, output_dir, repo_dir)
+    # Static pages
+    create_static_pages(output_dir)
 
+    log.info("All static content is ready inside '%s'." % OUTPUT_DIR)
+
+
+@click.command()
+@click.option('-f', '--fetch-only', help='Only clone or pull repos, do not generate HTML output.', is_flag=True, default=False)
+@click.option('-x', '--offline', help='Offline mode, do not clone or pull.', is_flag=True, default=False)
+@click.option('-o', '--output-dir', help='Output directory (default is _output)', type=click.Path(), default=OUTPUT_DIR)
+def main(offline, fetch_only, output_dir):
+    generate(offline, fetch_only, output_dir)
 
 if __name__ == "__main__":
-    generate()
+    main()
