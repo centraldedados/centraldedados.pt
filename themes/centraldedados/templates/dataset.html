@@ -1,12 +1,16 @@
 {% extends "base.html" %}
 
+{% block title %}
+      <title>{{ datapkg.title }} — Central de Dados</title>
+      <meta name="description" content="{{ datapkg.description }}. A Central de dados é um repositório de datasets Open Data em Portugal">
+{% endblock %}
+
 {% block content %}
 
 <section class="row">
   <div>
     <div class="main-dataset">
-      <h1>{{ title }}</h1>
-
+    
       <div class="details">
         <h4>Detalhes</h4>
         <p><strong>Versão</strong> {{ datapkg.version }}</p>
