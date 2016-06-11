@@ -19,15 +19,15 @@
         <li class="dataset-{{ d.original_name }}">
           <a href="/{{ d.name }}/">
             <h3>{{ d.title }}</h3>
-            <p>{{ d.description }}</p>
-            <p class="source">
+            <span>{{ d.description }}</span>
+            <span class="source">
               {% if d.sources %}
               <em>Fontes:</em>
               {% for s in d.sources %}
                 {{ s.name }}
               {% endfor %}
               {% endif %}
-            </p>
+            </span>
           </a>
         </li>
         {% endfor %}

@@ -330,7 +330,8 @@ a:active {
     margin-bottom: .75em;
 }
 
-.row .main ul {
+.row .main-dataset ul,
+.row .static-page ul  {
     margin-left: 1.25rem;
     line-height: 1.4;
     list-style-type: '— ';
@@ -338,7 +339,8 @@ a:active {
     margin-bottom: 1rem;
 }
 
-.row .main ul li {
+.row .main-dataset ul li,
+.row .static-page ul li {
     padding-left: 0.25rem;
     margin-bottom: 0.45rem;
 }
@@ -348,12 +350,13 @@ a:active {
 }
 
 #search {
+    box-sizing: border-box;
     display: block;
     font-size: 1rem;
     font-family: 'Comme';
     font-weight: 300;
     width: 100%;
-    border: 2px solid #de1b1b;
+    border: 2px solid #ccc;
     padding: 0.5em 0 0.5em 0.5em;
     border-radius: 4px;
 }
@@ -361,6 +364,11 @@ a:active {
     ::-webkit-input-placeholder { color: #969ba6; }
     ::-moz-placeholder          { color: #969ba6; }
     :-ms-input-placeholder      { color: #969ba6; }
+
+#search:focus {
+    color: #2c373a;
+    border: 2px solid #de1b1b;
+}
 
 #spinner {
     display: inline;
@@ -400,11 +408,16 @@ code {
     color: #2c373a;
 }
 
-    .datasets > li a h3 { color: #de1b1b; }
-    .datasets > li a p { color: #2c373a; }
-    .datasets > li a p.source { color: #969ba6; }
+    .datasets > li a h3          { color: #de1b1b; }
+    .datasets > li a span        { color: #2c373a; }
+    .datasets > li a span.source { color: #969ba6; }
 
-.datasets .source {
+.datasets > li span {
+    display: block;
+}
+
+.datasets > li span.source {
+    display: block;
     font-size: 0.875rem;
     color: #969ba6;
 }
@@ -585,7 +598,7 @@ code {
         clear: both;
         margin: 0 auto;
         padding-top: 1.325em;
-        padding-bottom: 1.325em;
+        padding-bottom: 2em;
     }
 
     .row > div > .description {
