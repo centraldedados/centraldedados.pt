@@ -76,7 +76,8 @@ def create_static_pages(output_dir):
         page_name = f.split("/")[-1].replace(".md", "")
         print page_name
         target_dir = os.path.join(output_dir, "%s/" % page_name)
-        os.makedirs(target_dir)
+        if not os.path.exists(target_dir):
+            os.makedirs(target_dir)
         target = os.path.join(target_dir, "index.html")
         context = {"content": markdown.markdown(codecs.open(f, 'r', 'utf-8').read(), output_format="html5", encoding="UTF-8"),
                    }
