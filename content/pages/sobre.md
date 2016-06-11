@@ -38,5 +38,6 @@ A [Ana Isabel Carvalho](https://twitter.com/aiscarvalho) e o [Ricardo
 Lafuente](https://twitter.com/rlaf) cuidam do motor que alimenta a Central, bem
 como do logo e do design do site. 
 
-A curadoria dos datasets é assegurada por ambos, e várias pessoas ajudaram num
-momento ou noutro à construção do site e do seu conteúdo.
+A curadoria dos datasets é assegurada por ambos, e [várias
+pessoas](https://github.com/orgs/centraldedados/people) ajudaram num momento ou
+noutro à construção do site e do seu conteúdo.
