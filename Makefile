@@ -41,7 +41,7 @@ build-offline:
 install:
 	virtualenv .env --no-site-packages --distribute --prompt=\(datacentral\)
 	. `pwd`/.env/bin/activate; pip install -r requirements.txt
-	cp settings.conf.sample settings.conf
+	if [ ! -f settings.conf ]; then cp settings.conf.sample settings.conf; fi
 
 serve:
 	. `pwd`/.env/bin/activate; livereload -p $(SERVER_PORT) $(OUTPUT)
