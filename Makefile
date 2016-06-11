@@ -27,9 +27,9 @@
 SSH_PATH = "wf:~/webapps/centraldedados/"
 # server port for local server
 SERVER_PORT = 8002
-OFFLINE_FLAG = --offline
-OUTPUT = _output
-MAIN_SCRIPT = $(wildcard generate.py) --output-dir=$(OUTPUT)
+MAIN_SCRIPT = $(wildcard datacentral.py)
+OFFLINE_FLAG = "--offline"
+OUTPUT = "_output"
 
 
 build: 
@@ -43,11 +43,14 @@ install:
 	. `pwd`/.env/bin/activate; pip install -r requirements.txt
 	cp settings.conf.sample settings.conf
 
-serve: $(OUTPUT)
-	. `pwd`/.env/bin/activate; cd $(OUTPUT) && livereload -p $(SERVER_PORT)
+serve:
+	. `pwd`/.env/bin/activate; livereload -p $(SERVER_PORT) $(OUTPUT)
 
 deploy:
 	rsync --compress --progress --recursive --delete $(OUTPUT)/ $(SSH_PATH)
 
 clean:
 	rm -fr repos $(OUTPUT)
+
+test:
+	. `pwd`/.env/bin/activate; nosetests tests.py
