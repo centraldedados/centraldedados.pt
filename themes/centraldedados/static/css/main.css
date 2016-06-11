@@ -332,20 +332,26 @@ a:active {
 
 .row .main-dataset ul,
 .row .static-page ul  {
-    margin-left: 1.25rem;
     line-height: 1.4;
-    list-style-type: '— ';
-    list-style-position: outside;
     margin-bottom: 1rem;
+    margin-left: 0;
+}
+
+.row .main-dataset ul li::before,
+.row .static-page ul li::before {
+    content: '— ';
+    display: inline-block;
+    padding-right: 0.45rem;
 }
 
 .row .main-dataset ul li,
 .row .static-page ul li {
-    padding-left: 0.25rem;
     margin-bottom: 0.45rem;
 }
 
+
 .search {
+    position: relative;
     padding: 0 0 1em;
 }
 
@@ -354,7 +360,7 @@ a:active {
     display: block;
     font-size: 1rem;
     font-family: 'Comme';
-    font-weight: 300;
+    font-weight: 400;
     width: 100%;
     border: 2px solid #ccc;
     padding: 0.5em 0 0.5em 0.5em;
@@ -411,6 +417,11 @@ code {
     .datasets > li a h3          { color: #de1b1b; }
     .datasets > li a span        { color: #2c373a; }
     .datasets > li a span.source { color: #969ba6; }
+
+
+.datasets > li a:hover h3,
+.datasets > li a:focus h3,
+.datasets > li a:active h3 { color: #c91313; }
 
 .datasets > li span {
     display: block;
