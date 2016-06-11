@@ -6,16 +6,17 @@
     <title>{% block title %}Central de Dados{% endblock %}</title>
     <meta name="description" content="Um repositório de datasets Open Data em Portugal">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="shortcut icon" href="/img/favicon.png">
+    
     <link rel="stylesheet" href="/css/main.css">
   </head>
   <body>
     <nav class="nav">
       <div>
         <ul>
-          <!--
-            <li><a href="#">Acerca</a></li>
-            <li><a href="#">FAQ</a></li>
-          -->
+            <li><a href="/sobre">Sobre</a></li>
+            <li><a href="#">Perguntas & Respostas</a></li>
           <li><a href="/api.json">API</a></li>
         </ul>
       </div>
@@ -23,7 +24,7 @@
     <header class="header">
       <div>
         <a href="/">
-          <p><img src="/img/centraldedados.png" alt="Central de Dados" /></p>
+          <p><img src="/img/centraldedados.png" alt="Central de Dados"></p>
           <h1>Central de Dados</h1>
         </a>
       </div>
@@ -31,19 +32,31 @@
     {% block content %}{% endblock %}
     <footer class="footer row">
       <div>
-        <h4><a rel="external" href="http://transparenciahackday.org" title="Transparência Hackday">Transparência Hackday Portugal</a></h4>
+        <h5>Preparado por 
+          <a rel="external" target="_blank" href="http://transparenciahackday.org" title="Transparência Hackday">
+            <img src="/img/thackdaypt.png" alt="Transparência Hackday Portugal"> Transparência Hackday Portugal
+          </a> 
+          nos 
+          <a rel="external" target="_blank" href="http://datewithdata.pt" title="Date With Data">
+            <img src="/img/datewithdata.png" alt="Date With Data">
+          </a>
+        </h5>
         <ul>
           <li>Apoio&nbsp;
-            <a rel="external" href="http://jplusplus.org">
-              <img src="/img/jplusplus.png" alt="Journalism++" />
+            <a rel="external" target="_blank" href="https://okfn.org/network/portugal/">
+              <img src="/img/okfn-pt.png" alt="Open Knowledge Portugal">
+              <strong>Open Knowledge Portugal</strong>
+            </a>
+            <a rel="external" target="_blank" href="http://jplusplus.org">
+              <img src="/img/jplusplus.png" alt="Journalism++">
               <strong>Journalism++</strong>
             </a>
           </li>
           <li>
             Agradecimentos&nbsp;
-            <a rel="external" href="https://okfn.org">
-              <img src="/img/okfn.png" alt="OKFN" />
-              <strong>Open Knowledge</strong>
+            <a rel="external" target="_blank" href="https://okfn.org">
+              <img src="/img/okfn.png" alt="OKI">
+              <strong>Open Knowledge International</strong>
             </a>
           </li>
         </ul>
