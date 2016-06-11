@@ -1,4 +1,4 @@
-# Tutorial
+# Tutorial2
 
 Overview do tutorial
 
@@ -13,7 +13,7 @@ Tutorial
 
 1. Efectuar download do dataset
 
-* screenshot
+![Screenshot01](/media/screenshot_01.png "Screenshot01")
 
 
 2. Abrir o browser no Google Spreadsheets e fazer upload do ficheiro CSV.
