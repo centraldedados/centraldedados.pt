@@ -31,10 +31,10 @@ OFFLINE_FLAG = --offline
 OUTPUT = _output
 MAIN_SCRIPT = $(wildcard generate.py) --output-dir=$(OUTPUT)
 
-$(OUTPUT):
+
+build: 
 	. `pwd`/.env/bin/activate; python $(MAIN_SCRIPT)
 
-build: $(OUTPUT)
 build-offline:
 	. `pwd`/.env/bin/activate; python $(MAIN_SCRIPT) $(OFFLINE_FLAG)
 
