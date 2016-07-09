@@ -12,9 +12,8 @@ theme = centraldedados
 contact_email = johndoe@dummydomain.net
 
 [repositories]
-# Place all data package repos, one per line, on this section.
-# We recommend that you use the repo name as the first string before `=`
-# for consistency.
-population = https://github.com/datasets/population.git
-gold-prices = https://github.com/datasets/gold-prices.git
-gdp = https://github.com/datasets/gdp.git
+eleicoes-datas = https://github.com/centraldedados/eleicoes-datas.git
+parlamento-datas_sessoes = https://github.com/centraldedados/parlamento-datas_sessoes.git
+obitos = https://github.com/centraldedados/obitos.git
+nomes_proprios = https://github.com/centraldedados/nomes_proprios.git
+codigos_postais = https://github.com/centraldedados/codigos_postais.git

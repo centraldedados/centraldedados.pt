@@ -45,6 +45,8 @@ packages = []
 # set logging level
 log.level('info')
 
+global_context = {"welcome_text": markdown.markdown(codecs.open("content/welcome_text.md", 'r', 'utf-8').read(), output_format="html5", encoding="UTF-8")}
+
 
 def local_and_remote_are_at_same_commit(repo, remote):
     local_commit = repo.commit()
@@ -58,9 +60,8 @@ def create_index_page(packages, output_dir):
     process_datapackage function.'''
     template = env.get_template("list.html")
     target = "index.html"
-    context = {"datapackages": packages,
-               "welcome_text": markdown.markdown(codecs.open("content/welcome_text.md", 'r', 'utf-8').read(), output_format="html5", encoding="UTF-8"),
-               }
+    # Merge global context with local variables (http://stackoverflow.com/a/1552420/122400)
+    context = dict({"datapackages": packages}, **global_context)
     contents = template.render(**context)
     f = codecs.open(os.path.join(output_dir, target), 'w', 'utf-8')
     f.write(contents)
@@ -71,7 +72,7 @@ def create_index_page(packages, output_dir):
 def create_contact_page(output_dir, contact_email=""):
     '''Creates a contact form page.'''
     template = env.get_template("contact.html")
-    target_dir = os.path.join(output_dir, "contact/")
+    target_dir = os.path.join(output_dir, "contacto/")
     if not os.path.exists(target_dir):
         os.makedirs(target_dir)
     target = os.path.join(target_dir, "index.html")
@@ -94,9 +95,10 @@ def create_static_pages(output_dir):
         if not os.path.exists(target_dir):
             os.makedirs(target_dir)
         target = os.path.join(target_dir, "index.html")
-        context = {}
-        md_content = codecs.open(f, 'r', 'utf-8').read()
-        context["content"] = markdown.markdown(md_content, output_format="html5", encoding="UTF-8")
+        md_content = markdown.markdown(codecs.open(f, 'r', 'utf-8').read(), output_format="html5", encoding="UTF-8")
+        context = dict({"content": md_content,
+                        "pagename": page_name},
+                       **global_context)
         contents = template.render(**context)
         f = codecs.open(target, 'w', 'utf-8')
         f.write(contents)
@@ -133,8 +135,7 @@ def create_dataset_page(pkg_info, output_dir):
 
     target = "%s/index.html" % (name)
 
-    context = {"datapkg": pkg_info}
-    context['welcome_text'] = markdown.markdown(codecs.open("content/welcome_text.md", 'r', 'utf-8').read(), output_format="html5", encoding="UTF-8")
+    context = dict({"datapkg": pkg_info}, **global_context)
     contents = template.render(**context)
 
     f = codecs.open(os.path.join(output_dir, target), 'w', 'utf-8')
@@ -149,6 +150,8 @@ def process_datapackage(pkg_name, repo_dir):
         - name
         - title
         - license
+        - repository
+        - version
         - description
         - sources
         - readme: in HTML, processed with python-markdown from README.md,
@@ -169,6 +172,8 @@ def process_datapackage(pkg_name, repo_dir):
     pkg_info['license'] = metadata.get('license')
     pkg_info['description'] = metadata['description']
     pkg_info['sources'] = metadata.get('sources')
+    pkg_info['version'] = metadata.get('version')
+    pkg_info['repository'] = metadata.get('repository')
     # process README
     readme = ""
     readme_path = os.path.join(pkg_dir, "README.md")
@@ -226,8 +231,6 @@ def generate(offline=False,
         os.mkdir(repo_dir)
     # Copy htaccess file
     shutil.copyfile(os.path.join(theme_dir, 'static/htaccess'), os.path.join(output_dir, ".htaccess"))
-    # Create static dirs
-    # TODO: only update changed files -- right now we regenerate the whole static dir
 
     # Static CSS files
     css_dir = os.path.join(output_dir, "css")
@@ -290,8 +293,6 @@ def generate(offline=False,
             else:
                 log.debug("%s: Offline mode, using cached version." % name)
                 # we set updated to True in order to re-generate everything
-                # FIXME: See checksum of CSV files to make sure they're new before
-                # marking updated as true
                 updated = True
                 repo = git.Repo(dir_name)
             if fetch_only:
@@ -355,7 +356,6 @@ def generate(offline=False,
 @click.option('-o', '--output-dir', help='Output directory (default is _output)', type=click.Path(), default=OUTPUT_DIR)
 def main(offline, fetch_only, output_dir):
     generate(offline, fetch_only, output_dir)
-
 
 if __name__ == "__main__":
     main()

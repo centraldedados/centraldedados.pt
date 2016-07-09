@@ -1,6 +1,17 @@
-A Central de Dados é um **repositório aberto de datasets _Open Data_ em Portugal**. Os dados aqui publicados são provenientes de diversas fontes (sempre indicadas!) e estão sob a curadoria do [Transparência Hackday](http://transparenciahackday.org).
+**Este site ainda está em desenvolvimento; os recursos aqui contidos podem ser
+usados, mas poderão ser alterados ou corrigidos a qualquer momento.**
 
-Neste momento, os datasets que colocamos à disposição estão em formato CSV, mas estamos a trabalhar ativamente para poder fornecer outros formatos _open data_.
+A Central de Dados é um **repositório aberto de datasets _Open Data_ em
+Portugal**. Os dados aqui publicados são provenientes de diversas fontes e
+estão sob a curadoria do [Transparência
+Hackday](http://transparenciahackday.org) e da [Open Knowledge
+Portugal](http://okfn.org/network/portugal). O nosso objetivo é catalogar,
+afinar, complementar e publicar conjuntos de informação pública, para que
+possam ser reutilizados em visualizações, *webapps*, consultas e outros fins.
 
-A Central de Dados é uma ferramenta livre, e todo o código que criámos está [disponível como software livre](https://github.com/centraldedados/datacentral). O projeto ainda está em construção, por isso agradecemos imenso que nos sejam indicadas correções, sugestões e outros comentários no nosso [tracker](https://github.com/centraldedados/datacentral/issues).
+É possível [seguir as novidades no Twitter](https://twitter.com/CentralDeDados)!
+
+A Central de Dados é uma ferramenta aberta e pública, e todo o código para ela
+criado está [disponível](https://github.com/centraldedados/centraldedados.pt) segundo
+uma licença de software livre.
 
