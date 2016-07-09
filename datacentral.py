@@ -72,7 +72,7 @@ def create_index_page(packages, output_dir):
 def create_contact_page(output_dir, contact_email=""):
     '''Creates a contact form page.'''
     template = env.get_template("contact.html")
-    target_dir = os.path.join(output_dir, "contact/")
+    target_dir = os.path.join(output_dir, "contacto/")
     if not os.path.exists(target_dir):
         os.makedirs(target_dir)
     target = os.path.join(target_dir, "index.html")
@@ -231,8 +231,6 @@ def generate(offline=False,
         os.mkdir(repo_dir)
     # Copy htaccess file
     shutil.copyfile(os.path.join(theme_dir, 'static/htaccess'), os.path.join(output_dir, ".htaccess"))
-    # Create static dirs
-    # TODO: only update changed files -- right now we regenerate the whole static dir
 
     # Static CSS files
     css_dir = os.path.join(output_dir, "css")
@@ -295,8 +293,6 @@ def generate(offline=False,
             else:
                 log.debug("%s: Offline mode, using cached version." % name)
                 # we set updated to True in order to re-generate everything
-                # FIXME: See checksum of CSV files to make sure they're new before
-                # marking updated as true
                 updated = True
                 repo = git.Repo(dir_name)
             if fetch_only:
