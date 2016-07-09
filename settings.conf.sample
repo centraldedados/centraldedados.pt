@@ -1,7 +1,14 @@
+# This is the sample configuration file for Datacentral.
+# Running `make install` will create a copy called `settings.conf` which
+# should be tweaked for your own installation.
+
 [ui]
+# The theme to use. For the moment there's only one.
 theme = centraldedados
 
 [credentials]
+# E-mail to use for the contact form. Uses Formspree.io to send email,
+# see their site to learn how it works.
 contact_email = johndoe@dummydomain.net
 
 [repositories]
