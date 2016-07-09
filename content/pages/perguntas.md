@@ -2,9 +2,9 @@
 
 ### Em que formato estão disponíveis os dados?
 
-Os datasets que disponibilizamos são publicados em CSV e JSON, seguindo a norma [Tabular Data Package](http://frictionlessdata.io/guides/tabular-data-package/). 
+Os datasets que disponibilizamos são publicados em CSV e JSON, seguindo a norma [Tabular Data Package](http://frictionlessdata.io/guides/tabular-data-package/). A versão JSON é automaticamente gerada a partir do CSV, salvo menção em contrário na descrição da data package.
 
-Os ficheiros nestes formatos podem ser abertos em qualquer editor de  texto, mas são melhor visualizados num editor de folhas de cálculo como o LibreOffice Calc, Google Spreadsheets ou Microsoft Excel.
+Os ficheiros nestes formatos podem ser abertos em qualquer editor de texto, mas o CSV será mais facilmente legível num editor de folhas de cálculo como o LibreOffice Calc, Google Spreadsheets ou Microsoft Excel. O formato JSON é mais indicado para bibliotecas de visualização (como o D3.js).
 
 ### O que são data packages?
 
