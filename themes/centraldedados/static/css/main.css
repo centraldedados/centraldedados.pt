@@ -1,4 +1,10 @@
-/* Eric Meyer's Reset CSS */
+/* Reset
+*/
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -8,34 +14,45 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary, main,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
 }
-
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
 body {
-    line-height: 1;
+	line-height: 1;
 }
-
 ol, ul {
-    list-style: none;
+	list-style: none;
 }
-
 blockquote, q {
-    quotes: none;
+	quotes: none;
 }
-
 blockquote:before, blockquote:after,
 q:before, q:after {
-    content: '';
-    content: none;
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 a { background-color: transparent; }
@@ -109,6 +126,11 @@ html {
   box-sizing: border-box;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: inherit; }
+
 /*! HTML5 Boilerplate v4.3.0 | MIT License | http://h5bp.com/ */
 
 html,
@@ -120,7 +142,7 @@ textarea {
 }
 
 html {
-    font-size: 1rem;
+    font-size: 100%;
     line-height: 1.4;
 }
 
@@ -139,7 +161,7 @@ hr {
     height: 1px;
     border: 0;
     border-top: 1px solid #ccc;
-    margin: 1em 0;
+    margin: 1rem 0;
     padding: 0;
 }
 
@@ -162,8 +184,8 @@ textarea {
 
 
 /* ==========================================================================
-     Author's custom styles
-     ========================================================================== */
+   Author's custom styles
+   ========================================================================== */
 
 /* Typography
 */
@@ -304,14 +326,13 @@ a:focus,
 a:active {
     color: #c91313;
 }
-
 /* Layout
 */
 
 .row:before, .row:after,
 .header:before, .header:after,
 .nav:before, .nav:after,
-.datafiles:before, .datafiles:after    {
+.datafiles:before, .datafiles:after  {
     content: " ";
     display: table;
 }
@@ -552,14 +573,12 @@ code {
 }
 
 .footer {
-    background: #d8d6c9;
-    padding-top: 1em;
+  background: #d8d6c9;
+  padding-top: 1rem;
 }
 
-.footer h5 {
-    color: #2c373a;
-    margin-bottom: 1.75em;
-    text-transform: none;
+.footer h4 {
+  margin-bottom: 1rem;
 }
 
 .footer h5 {
@@ -591,9 +610,11 @@ code {
     width: auto;
 }
 
+/* Forms -- contact form
+*/
 
-.footer li {
-    margin: 1em 1em 0 0;
+form {
+    padding: 1.5rem 0;
 }
 
 form p {
@@ -601,15 +622,18 @@ form p {
     margin-bottom: 1rem;
 }
 
-/* ==========================================================================
-     Media Queries
-     ========================================================================== */
+form label {
+    font-size: 0.875rem;
+    font-family: 'Comme Regular', DejaVu Sans, Arial, sans-serif;
+    display: block;
+    width: 100%;
+    margin-bottom: 1rem;
+}
 
-@media only screen and (min-width: 400px) {
-
-    .datafiles > ul {
-        margin: 0 0 20px;
-    }
+form input {
+    display: block;
+    width: 100%;
+}
 
 input[type="text"],
 input[type="email"] {
@@ -629,7 +653,6 @@ input[type="email"] {
     width: 100%;
 }
 
-@media only screen and (min-width: 400px) and (max-width: 599px) {
 
 textarea {
   display: block;
@@ -675,18 +698,55 @@ textarea:focus  {
     vertical-align: middle;
 }
 
+.button:hover, .button:focus {
+    background-color: #888;
+}
+
+
+/* ==========================================================================
+   Media Queries
+   ========================================================================== */
+
+@media only screen and (min-width: 400px) {
+
+        .datafiles > ul {
+                margin: 0 0 1.25rem;
+        }
+
+}
+
+@media only screen and (min-width: 400px) and (max-width: 599px) {
+
+}
+
 
 @media only screen and (min-width: 600px) {
 
-    .row > div {
-        width: 92%;
-        margin: 1em auto;
-    }
+        .row > div {
+                width: 92%;
+                margin: 1em auto;
+        }
 
-    .header > div {
-        width: 92%;
-        margin: 0 auto;
-    }
+        .header > div {
+                width: 92%;
+                margin: 0 auto;
+        }
+
+        .header > div > a p {
+                display: block;
+                float: left;
+                width: 20%;
+                margin-right: 2%;
+        }
+
+        .header h1 {
+                float: left;
+        }
+
+        .nav > div {
+                width: 92%;
+                margin: 0 auto;
+        }
 
         .datafiles > ul {
                 margin: 0 0 1.25rem;
@@ -700,89 +760,89 @@ textarea:focus  {
 
 @media only screen and (min-width: 900px) {
 
-    .row > div {
-        width: 86%;
-        margin: 1em auto;
-    }
-
-    .header > div {
-        width: 86%;
-        margin: 0 auto;
-    }
-
-    .header > div > a p {
-        display: block;
-        float: left;
-        width: 28%;
-        margin-right: 2%;
-    }
-
-    .header h1 {
-        float: left;
-        font-size: 6.5rem;
-    }
-
-    .nav > div {
-        width: 86%;
-        margin: 0 auto;
-    }
-
-    .nav > div > ul {
-        float: right;
-        width: 70%;
-    }
-
-    .header + .row > div {
-        width: 86%;
-        overflow: auto;
-        clear: both;
-        margin: 0 auto;
-        padding-top: 1.325em;
-        padding-bottom: 2em;
-    }
-
-    .row > div > .description {
-        float: left;
-        width: 28%;
-        margin-right: 2%;
-    }
-
-        .datafiles > ul {
-                margin: 0 0 1.25rem;
+        .row > div {
+                width: 86%;
+                margin: 1rem auto;
         }
 
-    .row div .main-dataset {
-        width: 100%;
-    }
-    /* Dataset page columns */
+        .header > div {
+                width: 86%;
+                margin: 0 auto;
+        }
 
-    .details {
-        float: left;
-        width: 28%;
-        margin-right: 2%;
-    }
+        .header > div > a p {
+                display: block;
+                float: left;
+                width: 20%;
+                margin-right: 2%;
+        }
 
-    .readme {
-        float: left;
-        width: 70%;
-    }
+        .header h1 {
+                float: left;
+                font-size: 6.5rem;
+        }
 
-    .footer li {
-        display: inline-block;
-        margin: 0 1em 0 0;
-    }
+        .nav > div {
+                width: 86%;
+                margin: 0 auto;
+        }
 
-    .footer li a {
-        display: inline-block;
-        padding: .5em .25em;
-    }
+        .nav > div > ul {
+                float: right;
+                width: 70%;
+        }
+
+        .header + .row > div {
+                width: 86%;
+                overflow: auto;
+                clear: both;
+                margin: 0 auto;
+                padding-bottom: 1.325rem;
+        }
+
+        .row > div > .description {
+                float: left;
+                width: 20%;
+                margin-right: 2%;
+        }
+
+        .row div .main {
+                float: left;
+                width: 78%;
+        }
+
+        .row div .main-dataset {
+                width: 100%;
+        }
+        /* Dataset page columns */
+
+        .details {
+                float: left;
+                width: 30%;
+                margin-right: 5%;
+        }
+
+        .readme {
+                float: left;
+                width: 65%;
+        }
+
+        .footer li {
+                display: inline-block;
+                margin: 0 1rem 0 0;
+        }
+
+        .footer li a {
+                display: inline-block;
+                padding: .5rem .25rem;
+        }
 
 }
 
 
 /* ==========================================================================
-     Helper classes
-     ========================================================================== */
+   Helper classes
+   ========================================================================== */
 
 .ir {
     background-color: transparent;
