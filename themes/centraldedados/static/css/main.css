@@ -431,7 +431,7 @@ a:active {
 }
 
 .row .main-dataset .readme ul li::before,
-.row .static-page .readme ul li::before {
+.row .static-page ul li::before {
     content: '— ';
     display: inline-block;
     padding-right: 0.45rem;
