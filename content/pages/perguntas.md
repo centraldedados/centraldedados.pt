@@ -1,5 +1,9 @@
 # Perguntas & Respostas
 
+### Qual é a fiabilidade da informação que disponibilizam?
+
+Nós esforçamo-nos para conseguir a melhor organização e consistência dos dados que obtemos. No entanto, podem ocorrer erros e inconsistências nos dados da fonte ou no seu processamento. Assim, não podemos oferecer qualquer garantia de fiabilidade (ou sequer da utilidade) dos dados aqui contidos, e recomendamos vivamente a consulta das fontes originais em qualquer contexto que exija um mínimo de rigor.
+
 ### Em que formato estão disponíveis os dados?
 
 Os datasets que disponibilizamos são publicados em CSV e JSON, seguindo a norma [Tabular Data Package](http://frictionlessdata.io/guides/tabular-data-package/). A versão JSON é automaticamente gerada a partir do CSV, salvo menção em contrário na descrição da data package.
