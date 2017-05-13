@@ -27,3 +27,15 @@ Todo o código Python, HTML e CSS foi escrito usando os editores Gedit e Vim em 
 O [dados.gov.pt](http://dados.gov.pt) é um recurso fantástico ao qual recorremos frequentemente. A Central de Dados não procura ser uma alternativa, mas sim um complemento ao dados.gov.pt, contribuindo para um ecossistema de informação pública disponível livremente em formatos abertos.
 
 O [Pordata](http://pordata.pt) é um recurso interessante mas, infelizmente, não é aberto.
+
+### Como posso contribuir?
+
+Há muitas formas de contribuir e ajudar a tornar a [Central de Dados](http://centraldedados.pt) um recurso melhor!
+
+Para quem  gosta de dados e de fazer coisas bonitas com eles, convidámos todos os interessados a criar visualizações, análises e outras  aplicações criativas. Pedimos a gentil inclusão da Central de Dados como  fonte de dados, e temos todo o gosto em ajudar a divulgar os vários  exemplos do que é possível fazer com dados.
+
+Para quem gosta de usar Python para falar com os computadores, aceitamos todo o tipo de contributos no código do site! O software que faz mexer a Central é o [Datacentral](https://github.com/centraldedados/datacentral) e o seu repositório vive no GitHub. Aceitamos pull requests e quaisquer sugestões e bugs no issue tracker.
+
+Para quem puder dar uma mão a limpar CSV's e corrigir metadados, as várias fontes de dados precisam de quem as mantenha! Temos vários datasets, alguns deles ainda a precisar de algum trabalho, que podem ser "adotados" por quem quiser ajudar ao esforço de manter os dados fiéis e atuais. 
+
+É só [contactar-nos](http://centraldedados.pt/contacto/) e tratamos de explicar todo o processo -- é simples e divertido.   
