@@ -3,26 +3,32 @@
 {% block content %}
 
 <section class="row">
-  <div>
-    <div class="main-dataset">
-      <div class="readme">
-        <h2>Contact</h2>
+ <div>
+    <div class="description">
+      {{ welcome_text }}
+    </div>
+    <div class="main">
+      <div class="static-page page-contact">
+        
+	<h2>Contacto</h2>
         <form action="http://formspree.io/{{ contact_email }}" method="post">
           <label for="message">
-            Your message
-            <textarea name="message" id="message" placeholder="Message..." required></textarea>
+            Mensagem
+            <textarea name="message" id="message" placeholder="Mensagem..." required></textarea>
           </label>
           <label for="sender">
-            Your e-mail
+            Email
             <input type="email" name="_replyto" id="sender" placeholder="your-email@example.com">
           </label>
-          <p><input class="button" type="submit" value="Send"></p>
-          <input type="hidden" name="_subject" value="Datacentral contact!" />
+          <p><input class="button" type="submit" value="Enviar"></p>
+          <input type="hidden" name="_subject" value="Contacto Central de Dados!" />
           <input type="text" name="_gotcha" style="display:none" />
         </form>
+
       </div>
     </div>
   </div>
 </section>
+
 
 {% endblock content %}
