@@ -28,7 +28,10 @@ import codecs
 import click
 import zipfile
 import glob
-from utils import csv2json
+import time
+
+from utils import csv2json, fetch_data_package
+# from utils import download_file
 from zenlog import log
 
 CONFIG_FILE = "settings.conf"
@@ -144,7 +147,11 @@ def create_dataset_page(pkg_info, output_dir):
     log.debug("Created %s." % target)
 
 
-def process_datapackage(pkg_name, repo_dir):
+class ParseException(Exception):
+    pass
+
+
+def process_datapackage(pkg_name, repo_dir, repo_url):
     '''Reads a data package and returns a dict with its metadata. The
     items in the dict are:
         - name
@@ -163,34 +170,53 @@ def process_datapackage(pkg_name, repo_dir):
     '''
     pkg_dir = os.path.join(repo_dir, pkg_name)
     pkg_info = {}
-    metadata = json.loads(open(os.path.join(pkg_dir, "datapackage.json")).read())
+    try:
+        metadata = json.loads(open(os.path.join(pkg_dir, "datapackage.json")).read())
+    except IOError:
+        raise ParseException("datapackage.json not found")
 
     # get main attributes
     pkg_info['name'] = pkg_name
+    pkg_info['homepage'] = repo_url
     pkg_info['original_name'] = metadata['name']
     pkg_info['title'] = metadata['title']
     pkg_info['license'] = metadata.get('license')
-    pkg_info['description'] = metadata['description']
-    pkg_info['sources'] = metadata.get('sources')
     pkg_info['version'] = metadata.get('version')
     pkg_info['repository'] = metadata.get('repository')
     pkg_info['homepage'] = metadata.get('homepage')
+    if pkg_info['license'] and 'title' in pkg_info['license']:
+        pkg_info['license'] = pkg_info['license']['title']
+    if 'description' not in metadata:
+        pkg_info['description'] = ""
+    else:
+        pkg_info['description'] = metadata['description']
+    pkg_info['sources'] = metadata.get('sources') or []
     # process README
     readme = ""
     readme_path = os.path.join(pkg_dir, "README.md")
-    pkg_info['readme_path'] = readme_path
     if not os.path.exists(readme_path):
-        log.warn("No README.md file found in the data package.")
+        readme_path = os.path.join(pkg_dir, "README.markdown")
+    if not os.path.exists(readme_path):
+        if len(pkg_info['description']) > 140:
+            readme = markdown.markdown(pkg_info['description'], output_format="html5", encoding="UTF-8")
+            pkg_info['description'] = ""
+        else:
+            log.warn("No README.md or description found in the data package.")
     else:
+        pkg_info['readme_path'] = readme_path
         contents = codecs.open(readme_path, 'r', 'utf-8').read()
         try:
             readme = markdown.markdown(contents, output_format="html5", encoding="UTF-8")
         except UnicodeDecodeError:
-            log.critical("README.md has invalid encoding, maybe the datapackage is not UTF-8?")
-            raise
+            raise ParseException("README.md has invalid encoding, maybe the datapackage is not UTF-8?")
     pkg_info['readme'] = readme
     # process resource/datafiles list
     for r in metadata['resources']:
+        if not r.get('schema'):
+            log.warn("Schema missing in resource, adding blank")
+            r['schema'] = {'fields': []}
+        if not r.get('path'):
+            r['path'] = 'data/%s' % r['url'].split('/')[-1]
         r['basename'] = os.path.basename(r['path'])
         if not r.get('title'):
             if r.get('name'):
@@ -261,10 +287,19 @@ def generate(offline=False,
     for r in parser.items('repositories'):
         name, url = r
         dir_name = os.path.join(repo_dir, name)
+        repo = None
 
         # do we have a local copy?
         if os.path.isdir(dir_name):
-            if not offline:
+            if not os.path.isdir(os.path.join(dir_name, '.git')):
+                if url.endswith(".json"):
+                    log.info("%s: Data package, refreshing" % name)
+                    updated = fetch_data_package(url, dir_name)
+                else:
+                    log.info('%s: Unsupported repo, skipping update' % name)
+                    continue
+
+            elif not offline:
                 repo = git.Repo(dir_name)
                 origin = repo.remotes.origin
                 try:
@@ -274,7 +309,7 @@ def generate(offline=False,
                     origin.fetch()
                 except git.exc.GitCommandError:
                     log.critical("%s: Fetch error, this dataset will be left out." % name)
-                    raise
+                    continue
                 # see if we have updates
                 if not local_and_remote_are_at_same_commit(repo, origin):
                     log.debug("%s: Repo has new commits, updating local copy." % name)
@@ -304,15 +339,39 @@ def generate(offline=False,
                 log.warn("%s: No local cache, skipping." % name)
                 continue
             else:
-                log.info("%s: New repo, cloning." % name)
-                repo = git.Repo.clone_from(url, dir_name)
-                updated = True
+                if url.endswith(".git"):
+                    # Handle GIT Repository URL
+                    log.info("%s: New repo, cloning." % name)
+                    try:
+                        repo = git.Repo.clone_from(url, dir_name)
+                        # For faster checkouts, one file at a time:
+                        # repo = git.Repo.clone_from(url, dir_name, n=True, depth=1)
+                        # repo.git.checkout("HEAD", "datapackage.json")
+                    except git.exc.GitCommandError as inst:
+                        log.warn("%s: skipping %s" % (inst, name))
+                        continue
+                    updated = True
+
+                elif url.endswith(".json"):
+                    # Handle Data Package URL
+                    log.info("%s: New data package, fetching." % name)
+                    updated = fetch_data_package(url, dir_name)
+                else:
+                    log.warn("Unsupported repository: %s" % url)
 
         # get datapackage metadata
-        pkg_info = process_datapackage(name, repo_dir)
+        try:
+            pkg_info = process_datapackage(name, repo_dir, url)
+        except ParseException as inst:
+            log.warn("%s: skipping %s" % (inst, name))
+            continue
+
         # set last updated time based on last commit, comes in Unix timestamp format so we convert
         import datetime
-        d = repo.head.commit.committed_date
+        if repo is not None:
+            d = repo.head.commit.committed_date
+        else:
+            d = int(time.mktime(time.localtime()))
         last_updated = datetime.datetime.fromtimestamp(int(d)).strftime('%Y-%m-%d %H:%M:%S')
         pkg_info['last_updated'] = last_updated
         # add it to the packages list for index page generation after the loop ends
@@ -326,17 +385,20 @@ def generate(offline=False,
             datafiles = pkg_info['datafiles']
             zipf = zipfile.ZipFile(os.path.join(output_dir, name + '.zip'), 'w')
             for d in datafiles:
-                # copy CSV file
+                log.info("Copying %s" % d['path'])
+                # copy file
                 target = os.path.join(output_dir, os.path.basename(d['path']))
                 shutil.copyfile(os.path.join(dir_name, d['path']), target)
-                # generate JSON version
-                csv2json(target, target.replace(".csv", ".json"))
+                # generate JSON version of CSV
+                if target.endswith('.csv'):
+                    csv2json(target, target.replace(".csv", ".json"))
                 # make zip file
                 zipf.write(os.path.join(dir_name, d['path']), d['basename'], compress_type=zipfile.ZIP_DEFLATED)
-            try:
-                zipf.write(pkg_info['readme_path'], 'README.md')
-            except OSError:
-                pass
+            if 'readme_path' in pkg_info:
+                try:
+                    zipf.write(pkg_info['readme_path'], 'README.md')
+                except OSError:
+                    pass
             zipf.close()
 
     # HTML index with the list of available packages
@@ -357,6 +419,7 @@ def generate(offline=False,
 @click.option('-o', '--output-dir', help='Output directory (default is _output)', type=click.Path(), default=OUTPUT_DIR)
 def main(offline, fetch_only, output_dir):
     generate(offline, fetch_only, output_dir)
+
 
 if __name__ == "__main__":
     main()
