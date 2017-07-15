@@ -24,7 +24,7 @@
 # the basis from where this file was created.
 
 # your SSH target dir for rsync (set this in the environment)
-#SSH_PATH = "wf:~/webapps/centraldedados/"
+SSH_PATH = "wf:~/webapps/centraldedados/"
 
 # server port for local server
 SERVER_PORT = 8002
