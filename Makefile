@@ -50,7 +50,7 @@ serve:
 	. `pwd`/.env/bin/activate; livereload -p $(SERVER_PORT) $(OUTPUT)
 
 deploy:
-	rsync --compress --progress --recursive --delete $(OUTPUT)/ $(SSH_PATH)
+	rsync --checksum --compress --progress --recursive --delete $(OUTPUT)/ $(SSH_PATH)
 
 clean:
 	rm -fr repos $(OUTPUT)
