@@ -211,13 +211,6 @@ textarea {
     font-style: normal;
     src: local('Oxygen Bold'), url('/fonts/Oxygen/Oxygen-Bold.ttf') format('truetype');
 }
-/*
-@font-face {
-    font-family: 'Comme';
-    font-weight: 500;
-    font-style: normal;
-    src: local('Comme Medium'), url('/fonts/CommeSans/Comme-new-Regular.ttf') format('truetype');
-}*/
 
 @font-face {
     font-family: 'Comme Mono';
