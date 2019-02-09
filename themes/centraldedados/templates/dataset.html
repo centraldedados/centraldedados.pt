@@ -16,7 +16,7 @@
         <p><strong>Licença</strong> {{ datapkg.license }}</p>
         <p><strong>Última atualização</strong> {{ datapkg.last_updated }}</p>
         {% if datapkg.homepage %}
-        <p><a href="{{ datapkg.homepage }}">Ver no GitHub</a></p>
+        <p><a href="{{ datapkg.homepage }}">Ver Repositório</a></p>
         {% endif%}
         <hr>
         <div class="downloads">
@@ -42,7 +42,7 @@
           <h4>Fontes</h4>
           <ul>
             {% for s in datapkg.sources %}
-            <li><a href="{{ s.path }}">{{ s.title }}</a></li>
+            <li><a href="{{ s.web }}">{{ s.name }}</a></li>
             {% endfor %}
           </ul>
         </div>

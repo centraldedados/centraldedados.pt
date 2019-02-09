@@ -550,6 +550,14 @@ a:active {
     padding-top: 0;
 }
 
+
+.main-dataset .details a[href*="//"]:not([href*="http://centraldedados.pt/"])::after { /* external links */
+    display: inline-block;
+    content: '↗';
+    margin-right: 2px;
+}
+
+
 .datafile-box {
     margin-top: 1rem;
 }
