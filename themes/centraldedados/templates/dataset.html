@@ -23,7 +23,7 @@
           <h4>Downloads</h4>
           {% for d in datapkg.datafiles %}
           <div class="datafile-box">
-            <p><strong>{{ d.title|upper }}</strong> &ndash; <a href="/{{ d.basename }}">CSV</a> &bull; <a href="/{{ d.basename.replace(".csv", ".json") }}">JSON</a></p>
+            <p><strong>{{ d.title|upper }}</strong> &ndash; <a href="/{{ d.basename }}">CSV</a></p>
             {% if d.schema.fields %}
             <div class="datafile-fieldlist">
               <h5>Campos</h5>
