@@ -32,26 +32,26 @@
 	<!-- For nomad URL preview -->
     <img src="/img/share-image.png" class="hide">
 
-    <nav class="nav">
-      <div>
-        <ul>
-          <li><a href="/sobre/">Sobre</a></li>
-          <li><a href="/perguntas/">Perguntas & Respostas</a></li>
-          <li><a href="/contacto/">Contacto</a></li>
-          <li><a href="/api.json">API</a></li>
-        </ul>
-      </div>
-    </nav>
-    <header class="header">
-      <div>
-        <h1>
-          <a href="/">
-            <span id="logo"><img src="/img/centraldedados.png" alt="Datacentral"></span>
-            <span id="sitename">Central de Dados</span>
-          </a>
-        </h1>
-      </div>
-    </header>
+    <div class="topbar">
+        <div>
+            <header class="column">
+                <h1>
+                  <a href="/">
+                    <span id="logo"><img src="/img/centraldedados.png" alt="Datacentral"></span>
+                    <span id="sitename">Central de Dados</span>
+                  </a>
+                </h1>
+            </header>
+            <nav class="column">
+                <ul>
+                  <li><a href="/sobre/">Sobre</a></li>
+                  <li><a href="/perguntas/">Perguntas & Respostas</a></li>
+                  <li><a href="/contacto/">Contacto</a></li>
+                  <li><a href="/api.json">API</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
     {% block content %}{% endblock %}
     <footer class="footer row">
       <div>

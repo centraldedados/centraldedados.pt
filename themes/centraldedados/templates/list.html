@@ -8,7 +8,7 @@
     </div>
     <div class="main">
       <div class="search">
-        <input id="search" type="text" placeholder="Search datasets..." />
+        <input id="search" type="text" placeholder="Pesquisar datasets..." />
         <span id="spinner"><img src="/img/ajax-loader.gif" alt="Loading..." title="Loading..." /></span>
       </div>
       <ul class="datasets">
@@ -17,17 +17,17 @@
         </li>
         {% for d in datapackages %}
         <li class="dataset-{{ d.original_name }}">
-          <a href="/{{ d.name }}/">
-            <h3>{{ d.title }}</h3>
-            <span>{{ d.description }}</span>
-            <span class="source">
+          <a class="grid" href="/{{ d.name }}/">
+            <p class="column"><span class="source">
               {% if d.sources %}
               <em>Fontes:</em>
               {% for s in d.sources %}
                 {{ s.name }}
               {% endfor %}
               {% endif %}
-            </span>
+            </span></p>
+            <h3 class="column">{{ d.title }}</h3>
+            <p class="column"><span>{{ d.description }}</span></p>
           </a>
         </li>
         {% endfor %}

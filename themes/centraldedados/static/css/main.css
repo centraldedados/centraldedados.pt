@@ -223,6 +223,9 @@ body {
     font-family: 'Oxygen', Roboto, DejaVu Sans, Arial, sans-serif;
     font-weight: 400;
     line-height: 1.4;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 h1 {
@@ -242,7 +245,7 @@ h2 {
 }
 
 h3 {  
-    font-size: 1.625rem;
+    font-size: 1.425rem;
     font-family: 'Oxygen', Roboto, DejaVu Sans, Arial, sans-serif;
     font-weight: 400;    
     color: #888;
@@ -251,7 +254,7 @@ h3 {
 }
 
 h4 {  
-    font-size: 1.375rem; 
+    font-size: 1.175rem; 
     font-family: 'Oxygen', Roboto, DejaVu Sans, Arial, sans-serif;
     font-weight: 400;    
     color: #888;
@@ -329,13 +332,10 @@ a:active {
 
 .hide { display: none; }
 
-
 /* Layout
 */
 
 .row:before, .row:after,
-.header:before, .header:after,
-.nav:before, .nav:after,
 .datafiles:before, .datafiles:after  {
     content: " ";
     display: table;
@@ -346,8 +346,6 @@ a:active {
 }
 
 .row:after,
-.header:after
-.nav:after,
 .datafiles:after {
     clear: both;
 }
@@ -357,32 +355,105 @@ a:active {
     margin: 1rem auto;
 }
 
-.nav, .header, .row {
+.topbar, .header, .row {
     background: #f7f8f2;
 }
 
-.nav > div {
+.topbar > div {
     width: 96%;
     margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 0 2rem;
+    gap: 0 2rem;
+    padding-top: 1.5rem;
+    padding-bottom: 0.5rem;
+    align-items: end;
 }
 
-.nav li {
+.topbar .column {
+    display: block;
+}
+
+.topbar nav {
+    grid-column: end;
+}
+
+.topbar nav li {
     text-transform: uppercase;
 }
 
-.nav > div > ul {
+.topbar nav > div > ul {
     text-align: right;
 }
 
-.nav li {
+.topbar nav li {
     display: inline-block;
 }
 
-.nav li a {
+.topbar nav li a {
     display: block;
     padding: .75rem .5rem;
 }
 
+.topbar header a h1 {
+    font-size: 2rem;
+    margin-bottom: 0;
+    color: #000;
+}
+
+.topbar header span {
+    display: inline-block;
+}
+
+.topbar header img {
+    display: inline-block;
+    max-width: 80px;
+    height: auto;
+    vertical-align: baseline;
+}
+
+.search {
+    position: relative;
+}
+
+#search {
+    box-sizing: border-box;
+    display: block;
+    font-size: 1rem;
+    font-family: 'Oxygen', Roboto, DejaVu Sans, Arial, sans-serif;
+    font-weight: 400;
+    width: 100%;
+    border: 2px solid #ccc;
+    padding: 0.5em 0 0.5em 0.5em;
+    border-radius: 4px;
+}
+
+    ::-webkit-input-placeholder { color: #969ba6; }
+    ::-moz-placeholder          { color: #969ba6; }
+    :-ms-input-placeholder      { color: #969ba6; }
+
+#search:focus {
+    color: #2c373a;
+    border: 2px solid #de1b1b;
+}
+
+#spinner {
+    display: inline;
+    visibility: hidden;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.35rem;
+    z-index: 100;
+}
+
+.notfound {
+    display: none;
+    padding-top: 1em;
+}
+
+
+/*
 .header > div {
     width: 96%;
     clear: both;
@@ -408,14 +479,14 @@ a:active {
 }
 
 .header h1 #sitename {
-    font-size: 6.5vw;
+    font-size: 2rem;
     display: inline-block;
     vertical-align: bottom;
 }
 
 .header h1 #logo {
     display: inline-block;
-    width: 20%;
+    width: 100px;
     margin-right: 2%;
 }
 
@@ -425,6 +496,7 @@ a:active {
     height: auto;
     vertical-align: bottom;
 }
+*/
 
 .row .description {
     padding-top: 2rem;
@@ -465,63 +537,31 @@ a:active {
     margin-bottom: 0.45rem;
 }
 
-.search {
-    padding: 0 0 1rem;
-    position: relative;
-}
-
-#search {
-    box-sizing: border-box;
-    display: block;
-    font-size: 1rem;
-    font-family: 'Oxygen', Roboto, DejaVu Sans, Arial, sans-serif;
-    font-weight: 400;
-    width: 100%;
-    border: 2px solid #ccc;
-    padding: 0.5em 0 0.5em 0.5em;
-    border-radius: 4px;
-}
-
-    ::-webkit-input-placeholder { color: #969ba6; }
-    ::-moz-placeholder          { color: #969ba6; }
-    :-ms-input-placeholder      { color: #969ba6; }
-
-#search:focus {
-    color: #2c373a;
-    border: 2px solid #de1b1b;
-}
-
-#spinner {
-    display: inline;
-    visibility: hidden;
-    position: absolute;
-    top: 0.5rem;
-    right: 0.35rem;
-    z-index: 100;
-}
-
-.notfound {
-    display: none;
-    padding-top: 1em;
-}
-
 /* homepage dataset list
 */
 
 .datasets > li {
     border-top: 1px solid #b9bdc5;
-    padding-bottom: 0.75rem;
-    margin-top: 0.45rem;
-    margin-bottom: 0.45rem;
+    margin-top: 0;
 }
 
-    .datasets > li:nth-child(2) {
-        margin-top: 0;
+    .datasets > li.dataset-*:first-child {
+        border-top: 0;
     }
 
 .datasets > li a {
-    display: block;
     color: #2c373a;
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    grid-gap: 0 2rem;
+    gap: 0 2rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+.datasets > li a .column {
+    display: block;
+    margin-top: 0;
 }
 
     .datasets > li a h3          { color: #de1b1b; }
@@ -529,18 +569,22 @@ a:active {
     .datasets > li a span.source { color: #969ba6; }
 
 
-.datasets > li a:hover h3,
-.datasets > li a:focus h3,
-.datasets > li a:active h3 { color: #c91313; }
+.datasets > li a:hover * { color: #000; }
+
+/* .datasets > li a:hover * { color: #c91313; } */
+
+
+.datasets > li a h3 {
+    font-size: 100%;
+    font-weight: 700;
+}
 
 .datasets > li span {
     display: block;
 }
 
-.datasets > li span.source {
-    display: block;
+.datasets > li span {
     font-size: 0.875rem;
-    color: #969ba6;
 }
 
 /* dataset page
@@ -750,10 +794,10 @@ textarea:focus  {
         }
         .header h1 #logo img { 
             width: 100%;
-        }
+        }/*
         .header h1 #sitename { 
             font-size: 8.5vw;
-        }
+        }*/
         .row .description {
             padding-top: 0;
         }
@@ -774,22 +818,10 @@ textarea:focus  {
                 margin: 1em auto;
         }
 
-        .header > div {
+        .topbar > div {
                 width: 92%;
                 margin: 0 auto;
         }
-
-        /*.header > div > a p {
-                display: block;
-                float: left;
-                width: 20%;
-                margin-right: 2%;
-        }
-
-        .header h1 {
-                float: left;
-        }*/
-
         .nav > div {
                 width: 92%;
                 margin: 0 auto;
@@ -809,30 +841,9 @@ textarea:focus  {
                 margin: 1rem auto;
         }
 
-        .header > div {
+        .topbar > div {
                 width: 86%;
                 margin: 0 auto;
-        }
-
-        /*.header > div > a img {
-                display: inline-block;
-                width: 20%;
-                margin-right: 2%;
-        }
-
-        .header h1 {
-                float: left;
-                font-size: 6.5rem;
-        }*/
-
-        .nav > div {
-                width: 86%;
-                margin: 0 auto;
-        }
-
-        .nav > div > ul {
-                float: right;
-                width: 70%;
         }
 
         .header + .row > div {
