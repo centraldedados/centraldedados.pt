@@ -3,12 +3,9 @@
 {% block content %}
 <section class="row">
  <div>
-    <div class="description">
-      {{ welcome_text }}
-    </div>
     <div class="main">
       <div class="static-page page-contact">
-	<h2>Contacto</h2>
+	    <h2>Contacto</h2>
         <form action="http://formspree.io/{{ contact_email }}" method="post">
           <label for="message">
             Mensagem
@@ -16,14 +13,16 @@
           </label>
           <label for="sender">
             Email
-            <input type="email" name="_replyto" id="sender" placeholder="your-email@example.com">
+            <input type="email" name="_replyto" id="sender" placeholder="o-teu-email@example.com">
           </label>
           <p><input class="button" type="submit" value="Enviar"></p>
           <input type="hidden" name="_subject" value="Contacto Central de Dados!" />
           <input type="text" name="_gotcha" style="display:none" />
         </form>
-
       </div>
+    </div>
+    <div class="description">
+      {{ welcome_text }}
     </div>
   </div>
 </section>
