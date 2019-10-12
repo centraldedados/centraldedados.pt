@@ -335,24 +335,19 @@ a:active {
 /* Layout
 */
 
-.row:before, .row:after,
-.datafiles:before, .datafiles:after  {
-    content: " ";
-    display: table;
-}
-
 *, *:before, *:after {
     -moz-box-sizing: border-box;
 }
 
-.row:after,
-.datafiles:after {
-    clear: both;
-}
-
-.row > div {
+.row > div {    
     width: 96%;
-    margin: 1rem auto;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    grid-gap: 0 2rem;
+    gap: 0 2rem;
+    padding-top: 1.5rem;
+    padding-bottom: 0.5rem;
 }
 
 .topbar, .header, .row {
@@ -368,7 +363,8 @@ a:active {
     gap: 0 2rem;
     padding-top: 1.5rem;
     padding-bottom: 0.5rem;
-    align-items: end;
+    align-items: start;
+    border-bottom: 1px solid #b9bdc5;
 }
 
 .topbar .column {
@@ -393,11 +389,11 @@ a:active {
 
 .topbar nav li a {
     display: block;
-    padding: .75rem .5rem;
+    padding: 0 0.5rem .75rem .5rem;
 }
 
-.topbar header a h1 {
-    font-size: 2rem;
+.topbar header h1 a {
+    font-size: 2.5rem;
     margin-bottom: 0;
     color: #000;
 }
@@ -408,9 +404,10 @@ a:active {
 
 .topbar header img {
     display: inline-block;
-    max-width: 80px;
+    max-width: 160px;
     height: auto;
     vertical-align: baseline;
+    margin-right:  0.5em;
 }
 
 .search {
@@ -453,55 +450,6 @@ a:active {
 }
 
 
-/*
-.header > div {
-    width: 96%;
-    clear: both;
-    margin: 0 auto 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #b9bdc5;
-}
-
-.header a {
-    display: block;
-    width: 100%;
-    color: #2c373a;
-    padding: .5rem 0;
-}
-
-.header a:hover {
-    color: #de1b1b;
-}
-
-.header h1 {
-    line-height: 1;
-    margin: 0;
-}
-
-.header h1 #sitename {
-    font-size: 2rem;
-    display: inline-block;
-    vertical-align: bottom;
-}
-
-.header h1 #logo {
-    display: inline-block;
-    width: 100px;
-    margin-right: 2%;
-}
-
-.header h1 #logo img {
-    display: inline-block;
-    width: 80%;
-    height: auto;
-    vertical-align: bottom;
-}
-*/
-
-.row .description {
-    padding-top: 2rem;
-}
-
 .row .description p,
 .row .description code {
     font-size: 0.875rem;
@@ -510,6 +458,10 @@ a:active {
 .row .main {
     padding-top: 1rem;
     margin-bottom: 2.5rem;
+}
+
+.row .description {
+    padding-top: 1rem;
 }
 
 .description p,
@@ -651,6 +603,12 @@ a:active {
   padding-top: 1rem;
 }
 
+.footer > div {
+  background: #d8d6c9;
+  padding-top: 1rem;
+  display: block;
+}
+
 .footer h4 {
   margin-bottom: 1rem;
 }
@@ -783,24 +741,14 @@ textarea:focus  {
    ========================================================================== */
 
 
-@media only screen and (max-width: 480px) {
-
-        .header > div {
-            padding-bottom: 0;
-        }
-        .header h1 #logo { 
-            width: 15%;
-            margin-right: 1%;
-        }
-        .header h1 #logo img { 
-            width: 100%;
-        }/*
-        .header h1 #sitename { 
-            font-size: 8.5vw;
-        }*/
-        .row .description {
-            padding-top: 0;
-        }
+@media screen and (max-width: 39.9375em) { /* Small only */
+    .row > div {
+        display: block;
+    }
+    .topbar > div {
+        display: flex;
+        flex-direction: column-reverse;
+    }
 }
 
 @media only screen and (min-width: 480px) {
@@ -813,15 +761,8 @@ textarea:focus  {
 
 @media only screen and (min-width: 600px) {
 
-        .row > div {
-                width: 92%;
-                margin: 1em auto;
-        }
-
-        .topbar > div {
-                width: 92%;
-                margin: 0 auto;
-        }
+        .row > div,
+        .topbar > div,
         .nav > div {
                 width: 92%;
                 margin: 0 auto;
@@ -836,11 +777,7 @@ textarea:focus  {
 
 @media only screen and (min-width: 900px) {
 
-        .row > div {
-                width: 86%;
-                margin: 1rem auto;
-        }
-
+        .row > div,
         .topbar > div {
                 width: 86%;
                 margin: 0 auto;
@@ -853,43 +790,5 @@ textarea:focus  {
                 margin: 1rem auto 0;
                 padding-bottom: 1.325rem;
         }
-
-        .row > div > .description {
-                float: left;
-                width: 20%;
-                margin-right: 2%;
-        }
-
-        .row div .main {
-                float: left;
-                width: 78%;
-        }
-
-        .row div .main-dataset {
-                width: 100%;
-        }
-        /* Dataset page columns */
-
-        .details {
-                float: left;
-                width: 30%;
-                margin-right: 5%;
-        }
-
-        .readme {
-                float: left;
-                width: 65%;
-        }
-
-        .footer li {
-                display: inline-block;
-                margin: 0 1rem 0 0;
-        }
-
-        .footer li a {
-                display: inline-block;
-                padding: .5rem .25rem;
-        }
-
 }
 

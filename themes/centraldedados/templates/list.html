@@ -3,9 +3,6 @@
 {% block content %}
 <section class="row">
   <div>
-    <div class="description">
-      {{ welcome_text }}
-    </div>
     <div class="main">
       <div class="search">
         <input id="search" type="text" placeholder="Pesquisar datasets..." />
@@ -32,6 +29,9 @@
         </li>
         {% endfor %}
       </ul>
+    </div><!-- /.main -->
+    <div class="description">
+      {{ welcome_text }}
     </div>
   </div>
 </section>
